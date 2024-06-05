@@ -3,36 +3,42 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        int cylinders = 3000;
-        int startingPosition = 97;
-       List<int> queue2 = new List<int> { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 };
-        queue2.Sort();
-        int[] queue = { 140, 1751, 222, 47, 526, 1341, 2458, 327 };
-        int max = queue.Max();
-        int result1FCFS = FCFS(cylinders, startingPosition, new[]{ 140, 1751, 222, 47, 526, 1341, 2458, 327 });
-        int result1SSTF = SSTF(cylinders, startingPosition, new[] { 140, 1751, 222, 47, 526, 1341, 2458, 327 });
-        int result1SCAN = SCAN(cylinders, startingPosition, new[] { 140, 1751, 222, 47, 526, 1341, 2458, 327 }, 125);
-        int result1CSCAN = CSCAN(cylinders, startingPosition, new[] { 140, 1751, 222, 47, 526, 1341, 2458, 327 }, 125);
-        
-/*        int result2FCFS = FCFS(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 });
-        int result2SSTF = SSTF(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 });
-        int result2SCAN = SCAN(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }, 900);
-        int result2CSCAN = CSCAN(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }, 900);*/
+        Console.WriteLine("reference set 1 = { 140, 1751, 222, 47, 526, 1341, 2458, 327 }");
+        Console.WriteLine("FCFS with reference set 1 total moves = " + FCFS(3000, 97, new[] { 140, 1751, 222, 47, 526, 1341, 2458, 327 }));
+        Console.WriteLine("SSTF with reference set 1 total moves = " + SSTF(3000, 97, new[] { 140, 1751, 222, 47, 526, 1341, 2458, 327 }));
+        Console.WriteLine("SCAN with reference set 1 total moves = " + SCAN(3000, 97, new[] { 140, 1751, 222, 47, 526, 1341, 2458, 327 }, 125));
+        Console.WriteLine("CSCAN with reference set 1 total moves = " + CSCAN(3000, 97, new[] { 140, 1751, 222, 47, 526, 1341, 2458, 327 }, 125));
+        Console.WriteLine();
+        Console.WriteLine("reference set 2 = { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }");
+        Console.WriteLine("FCFS with reference set 2 total moves = " + FCFS(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }));
+        Console.WriteLine("SSTF with reference set 1 total moves = " + SSTF(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }));
+        Console.WriteLine("SCAN with reference set 1 total moves = " + SCAN(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }, 900));
+        Console.WriteLine("CSCAN with reference set 1 total moves = " + CSCAN(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }, 900));
+       
         Console.ReadLine();
-        ;
-        /*        SCAN(cylinders, startingPosition, queue);
-                CSCAN(cylinders, startingPosition, queue);*/
     }
 
     private static int CSCAN(int cylinders, int startingPosition, int[] queue, int lastInput)
     {
+        int loops = 0;
+        bool direction;
+        if (lastInput > startingPosition)
+        {
+            direction = false;
+            loops = queue.Length;
+        }
+        else
+        {
+            direction = true;
+            loops = queue.Length + 1;
+        }
         int moveSum = 0;
         int endVal = 0;
-        bool direction = false;
-        for (int i = 0; i < queue.Length + 1; i++)
+        int nextNumber = 0;
+        for (int i = 0; i < loops; i++)
         {
             int smallestDistance = int.MaxValue;
-            int nextNumber = 0;
+            nextNumber = 0;
             for (int j = 0; j < queue.Length; j++)
             {
                 if (queue[j] == startingPosition)
@@ -71,25 +77,41 @@ internal class Program
                     }
                 }
             }
-            if (direction == false && endVal == startingPosition)
+            if (direction == false && smallestDistance == int.MaxValue)
             {
-                smallestDistance = startingPosition + queue.Max();              
+                smallestDistance = startingPosition + queue.Max();
+                nextNumber = queue.Max();
             }
-            if (direction == true && endVal == startingPosition)
+            if (direction == true && nextNumber == 0)
             {
-                smallestDistance = ((cylinders - 1) - startingPosition) + cylinders - 1;
+                smallestDistance = ((cylinders - 1) - startingPosition) + (cylinders - 1);
+                nextNumber = (queue.Min());
             }
             moveSum += smallestDistance;
             startingPosition = nextNumber;
         }
+        if (direction == false)
+        {
+            return moveSum;
+        }
         return moveSum;
     }
 
-    private static int SCAN(int cylinders, int startingPosition, int[] queue, int lastInput) // DEV NOTE : gotta figure out a way to ge tthsi algo working
+    private static int SCAN(int cylinders, int startingPosition, int[] queue, int lastInput) 
     {
+        bool direction;
+        if (lastInput > startingPosition)
+        {
+            direction = false;
+        }
+        else
+        {
+            direction = true;
+        }
+
         int moveSum = 0;
         int endVal = 0;
-        bool direction = false;
+
         for (int i = 0; i < queue.Length + 1; i++)
         {
             int smallestDistance = int.MaxValue;
@@ -133,11 +155,24 @@ internal class Program
             }
             if (smallestDistance > endVal && nextNumber == 0)
             {
-                smallestDistance = endVal;
+                if (direction == false)
+                {
+                    smallestDistance = endVal;
+                }   
+                else
+                {
+                    smallestDistance = startingPosition - queue.Max();
+                    nextNumber = queue.Max();
+                }
+
                 direction = !direction;
             }
             moveSum += smallestDistance;
             startingPosition = nextNumber;
+        }
+        if (startingPosition == 0)
+        {
+            return moveSum - endVal;
         }
         return moveSum;
     }
@@ -190,9 +225,4 @@ internal class Program
         return moveSum;
     }
 
-    enum DIRECTION
-    {
-        LEFT = 0,
-        RIGHT = 1
-    }
 }
