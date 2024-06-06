@@ -11,9 +11,9 @@ internal class Program
         Console.WriteLine();
         Console.WriteLine("reference set 2 = { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }");
         Console.WriteLine("FCFS with reference set 2 total moves = " + FCFS(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }));
-        Console.WriteLine("SSTF with reference set 1 total moves = " + SSTF(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }));
-        Console.WriteLine("SCAN with reference set 1 total moves = " + SCAN(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }, 900));
-        Console.WriteLine("CSCAN with reference set 1 total moves = " + CSCAN(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }, 900));
+        Console.WriteLine("SSTF with reference set 2 total moves = " + SSTF(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }));
+        Console.WriteLine("SCAN with reference set 2 total moves = " + SCAN(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }, 900));
+        Console.WriteLine("CSCAN with reference set 2 total moves = " + CSCAN(1250, 1051, new[] { 111, 1167, 19, 79, 2, 1211, 47, 999, 453, 921, 1131 }, 900));
        
         Console.ReadLine();
     }
